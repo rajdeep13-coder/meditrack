@@ -1,7 +1,7 @@
-"""
-Models package for MediTrack.
+"""Model exports for MediTrack.
 
-Exports all SQLAlchemy database models used throughout the application.
+This package exposes the SQLAlchemy ORM models used by routes, tests,
+and background logic without requiring deep import paths.
 """
 
 from app.models.models import User, Medication, MedicationLog

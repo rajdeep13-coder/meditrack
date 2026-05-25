@@ -40,6 +40,9 @@ def dashboard():
 
     Shows all active medications with checkboxes to mark them as taken,
     the current adherence streak, and a progress bar for today.
+
+    SDG 3 alignment: improving adherence tracking supports better daily
+    health outcomes and continuity of treatment.
     """
     today = date.today()
 

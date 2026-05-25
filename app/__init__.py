@@ -1,9 +1,8 @@
-"""
-MediTrack Application Factory.
+"""Application factory for MediTrack.
 
-Initializes the Flask application with all extensions, blueprints,
-and configuration. Uses the application factory pattern to support
-testing and multiple configurations.
+This module wires together extensions, blueprints, and database setup
+using Flask's application factory pattern so the app can be instantiated
+for development, tests, and production-style runs.
 """
 
 import os
@@ -34,6 +33,9 @@ def create_app(config_class=Config):
     """
     app = Flask(__name__)
     app.config.from_object(config_class)
+
+    # SDG 3 alignment: MediTrack focuses on adherence and continuity of care,
+    # directly supporting UN Sustainable Development Goal 3 (Good Health).
 
     # Ensure instance directory exists for SQLite
     os.makedirs(os.path.join(app.root_path, '..', 'instance'), exist_ok=True)

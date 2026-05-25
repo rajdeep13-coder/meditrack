@@ -1,5 +1,5 @@
-"""
-Routes package for MediTrack.
+"""Route package for MediTrack.
 
-Contains blueprint definitions for authentication and main application routes.
+Groups application blueprints for authentication and medication tracking
+features so they can be registered by the app factory.
 """
