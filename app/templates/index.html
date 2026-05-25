@@ -1,0 +1,96 @@
+<!--
+  Landing page for MediTrack.
+  Showcases the app's purpose, key features, and SDG 3 alignment.
+  Directs unauthenticated visitors to register or log in.
+-->
+{% extends 'base.html' %}
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<section class="hero" id="hero-section">
+    <div class="hero-content">
+        <div class="hero-badge">
+            <i class="fas fa-globe-americas"></i>
+            UN SDG 3: Good Health &amp; Well-being
+        </div>
+        <h1 class="hero-title">
+            Take control of your
+            <span class="hero-highlight">medication health</span>
+        </h1>
+        <p class="hero-subtitle">
+            MediTrack helps you stay on top of your medications with smart reminders,
+            streak tracking, and a beautiful dashboard — so you never miss a dose.
+        </p>
+        <div class="hero-actions">
+            <a href="{{ url_for('auth.register') }}" class="btn btn-primary btn-lg" id="hero-cta-register">
+                <i class="fas fa-rocket"></i> Get Started Free
+            </a>
+            <a href="{{ url_for('auth.login') }}" class="btn btn-outline btn-lg" id="hero-cta-login">
+                <i class="fas fa-sign-in-alt"></i> Log In
+            </a>
+        </div>
+    </div>
+    <div class="hero-visual">
+        <div class="hero-card">
+            <div class="hero-card-header">
+                <i class="fas fa-check-circle"></i>
+                <span>Today's Progress</span>
+            </div>
+            <div class="hero-progress-ring">
+                <svg viewBox="0 0 120 120">
+                    <circle cx="60" cy="60" r="50" class="progress-bg"></circle>
+                    <circle cx="60" cy="60" r="50" class="progress-fill" style="stroke-dasharray: 235 314;"></circle>
+                </svg>
+                <div class="progress-text">75%</div>
+            </div>
+            <div class="hero-card-stats">
+                <div class="hero-stat">
+                    <i class="fas fa-fire"></i>
+                    <span>7-day streak</span>
+                </div>
+                <div class="hero-stat">
+                    <i class="fas fa-pills"></i>
+                    <span>3 of 4 taken</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="features" id="features-section">
+    <div class="features-container">
+        <h2 class="section-title">Why MediTrack?</h2>
+        <p class="section-subtitle">Everything you need to stay healthy and on schedule</p>
+        <div class="features-grid">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-calendar-check"></i>
+                </div>
+                <h3>Daily Dashboard</h3>
+                <p>See all your medications for today at a glance. Check them off as you take them.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-fire"></i>
+                </div>
+                <h3>Streak Tracking</h3>
+                <p>Build healthy habits with a streak counter that rewards your consistency.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Secure &amp; Private</h3>
+                <p>Your health data stays safe with encrypted passwords and private accounts.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-mobile-alt"></i>
+                </div>
+                <h3>Fully Responsive</h3>
+                <p>Track your meds from any device — desktop, tablet, or mobile phone.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

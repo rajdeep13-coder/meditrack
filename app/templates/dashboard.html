@@ -1,0 +1,117 @@
+<!--
+  Dashboard page for MediTrack.
+  Displays today's medications, progress bar, and adherence streak.
+  Medication checkboxes toggle via AJAX for a seamless experience.
+-->
+{% extends 'base.html' %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<section class="dashboard-section">
+    <div class="dashboard-header">
+        <div>
+            <h1 class="dashboard-title">
+                <i class="fas fa-columns"></i>
+                Good {{ greeting }}, {{ current_user.username }}!
+            </h1>
+            <p class="dashboard-date">
+                <i class="fas fa-calendar-day"></i>
+                {{ today.strftime('%A, %B %d, %Y') }}
+            </p>
+        </div>
+        <a href="{{ url_for('main.add_medication') }}" class="btn btn-primary" id="add-med-btn">
+            <i class="fas fa-plus"></i> Add Medication
+        </a>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-grid">
+        <div class="stat-card stat-progress">
+            <div class="stat-icon">
+                <i class="fas fa-chart-pie"></i>
+            </div>
+            <div class="stat-info">
+                <span class="stat-value" id="progress-value">{{ progress_percentage }}%</span>
+                <span class="stat-label">Today's Progress</span>
+            </div>
+            <div class="stat-bar">
+                <div class="stat-bar-fill" id="progress-bar" style="width: {{ progress_percentage }}%;"></div>
+            </div>
+        </div>
+        <div class="stat-card stat-taken">
+            <div class="stat-icon">
+                <i class="fas fa-check-double"></i>
+            </div>
+            <div class="stat-info">
+                <span class="stat-value"><span id="taken-count">{{ taken_count }}</span> / {{ total_meds }}</span>
+                <span class="stat-label">Medications Taken</span>
+            </div>
+        </div>
+        <div class="stat-card stat-streak">
+            <div class="stat-icon">
+                <i class="fas fa-fire"></i>
+            </div>
+            <div class="stat-info">
+                <span class="stat-value" id="streak-value">{{ streak }}</span>
+                <span class="stat-label">Day Streak 🔥</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Medication List -->
+    <div class="med-list-section">
+        <h2 class="section-heading">
+            <i class="fas fa-pills"></i> Today's Medications
+        </h2>
+
+        {% if medications %}
+        <div class="med-list" id="medication-list">
+            {% for med in medications %}
+            {% set log = today_logs.get(med.id) %}
+            {% set is_taken = log and log.taken %}
+            <div class="med-card {% if is_taken %}med-taken{% endif %}" id="med-card-{{ med.id }}" data-med-id="{{ med.id }}">
+                <div class="med-checkbox">
+                    <input
+                        type="checkbox"
+                        id="med-check-{{ med.id }}"
+                        class="med-check-input"
+                        data-med-id="{{ med.id }}"
+                        {% if is_taken %}checked{% endif %}
+                    >
+                    <label for="med-check-{{ med.id }}" class="med-check-label">
+                        <i class="fas fa-check"></i>
+                    </label>
+                </div>
+                <div class="med-info">
+                    <h3 class="med-name">{{ med.name }}</h3>
+                    <div class="med-details">
+                        <span class="med-dosage"><i class="fas fa-prescription-bottle-alt"></i> {{ med.dosage }}</span>
+                        <span class="med-frequency"><i class="fas fa-sync-alt"></i> {{ med.frequency }}</span>
+                        <span class="med-time"><i class="fas fa-clock"></i> {{ med.time }}</span>
+                    </div>
+                </div>
+                <div class="med-status">
+                    {% if is_taken %}
+                    <span class="badge badge-success"><i class="fas fa-check"></i> Taken</span>
+                    {% else %}
+                    <span class="badge badge-pending"><i class="fas fa-hourglass-half"></i> Pending</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-state" id="empty-dashboard">
+            <div class="empty-icon">
+                <i class="fas fa-capsules"></i>
+            </div>
+            <h3>No medications yet</h3>
+            <p>Add your first medication to start tracking your health journey.</p>
+            <a href="{{ url_for('main.add_medication') }}" class="btn btn-primary">
+                <i class="fas fa-plus"></i> Add Your First Medication
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

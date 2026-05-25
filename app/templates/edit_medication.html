@@ -1,0 +1,66 @@
+<!--
+  Edit Medication form for MediTrack.
+  Pre-fills the form with the selected medication's current values.
+-->
+{% extends 'base.html' %}
+{% block title %}Edit {{ medication.name }}{% endblock %}
+
+{% block content %}
+<section class="form-section">
+    <div class="form-card" id="edit-medication-card">
+        <div class="form-header">
+            <div class="form-icon form-icon-edit">
+                <i class="fas fa-edit"></i>
+            </div>
+            <h1>Edit Medication</h1>
+            <p>Update the details for <strong>{{ medication.name }}</strong></p>
+        </div>
+        <form method="POST" action="{{ url_for('main.edit_medication', med_id=medication.id) }}" class="medication-form" id="edit-medication-form">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-group">
+                <label for="name">
+                    <i class="fas fa-pills"></i> Medication Name
+                </label>
+                <input type="text" id="name" name="name" value="{{ medication.name }}" placeholder="e.g., Aspirin, Metformin" required>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="dosage">
+                        <i class="fas fa-prescription-bottle-alt"></i> Dosage
+                    </label>
+                    <input type="text" id="dosage" name="dosage" value="{{ medication.dosage }}" placeholder="e.g., 500mg, 1 tablet" required>
+                </div>
+                <div class="form-group">
+                    <label for="frequency">
+                        <i class="fas fa-sync-alt"></i> Frequency
+                    </label>
+                    <select id="frequency" name="frequency" required>
+                        <option value="" disabled>Select frequency</option>
+                        <option value="Once daily" {% if medication.frequency == 'Once daily' %}selected{% endif %}>Once daily</option>
+                        <option value="Twice daily" {% if medication.frequency == 'Twice daily' %}selected{% endif %}>Twice daily</option>
+                        <option value="Three times daily" {% if medication.frequency == 'Three times daily' %}selected{% endif %}>Three times daily</option>
+                        <option value="Every 8 hours" {% if medication.frequency == 'Every 8 hours' %}selected{% endif %}>Every 8 hours</option>
+                        <option value="Every 12 hours" {% if medication.frequency == 'Every 12 hours' %}selected{% endif %}>Every 12 hours</option>
+                        <option value="As needed" {% if medication.frequency == 'As needed' %}selected{% endif %}>As needed</option>
+                        <option value="Weekly" {% if medication.frequency == 'Weekly' %}selected{% endif %}>Weekly</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="time">
+                    <i class="fas fa-clock"></i> Scheduled Time
+                </label>
+                <input type="time" id="time" name="time" value="{{ medication.time }}" required>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary btn-block" id="edit-med-submit">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+                <a href="{{ url_for('main.medications') }}" class="btn btn-outline btn-block">
+                    <i class="fas fa-arrow-left"></i> Back to Medications
+                </a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
