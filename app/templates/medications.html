@@ -1,0 +1,83 @@
+<!--
+  Medications list page for MediTrack.
+  Shows all of the user's medications (active and inactive)
+  with options to edit, delete, or toggle active status.
+-->
+{% extends 'base.html' %}
+{% block title %}My Medications{% endblock %}
+
+{% block content %}
+<section class="medications-section">
+    <div class="medications-header">
+        <h1><i class="fas fa-pills"></i> My Medications</h1>
+        <a href="{{ url_for('main.add_medication') }}" class="btn btn-primary" id="add-medication-btn">
+            <i class="fas fa-plus"></i> Add Medication
+        </a>
+    </div>
+
+    {% if medications %}
+    <div class="med-table-container">
+        <table class="med-table" id="medications-table">
+            <thead>
+                <tr>
+                    <th>Medication</th>
+                    <th>Dosage</th>
+                    <th>Frequency</th>
+                    <th>Time</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for med in medications %}
+                <tr class="{% if not med.active %}row-inactive{% endif %}" id="med-row-{{ med.id }}">
+                    <td class="td-name">
+                        <i class="fas fa-capsules"></i>
+                        {{ med.name }}
+                    </td>
+                    <td>{{ med.dosage }}</td>
+                    <td>{{ med.frequency }}</td>
+                    <td>{{ med.time }}</td>
+                    <td>
+                        {% if med.active %}
+                        <span class="badge badge-success"><i class="fas fa-check-circle"></i> Active</span>
+                        {% else %}
+                        <span class="badge badge-inactive"><i class="fas fa-pause-circle"></i> Inactive</span>
+                        {% endif %}
+                    </td>
+                    <td class="td-actions">
+                        <a href="{{ url_for('main.edit_medication', med_id=med.id) }}" class="btn-icon btn-edit" title="Edit">
+                            <i class="fas fa-edit"></i>
+                        </a>
+                        <form method="POST" action="{{ url_for('main.toggle_active', med_id=med.id) }}" class="inline-form">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn-icon btn-toggle" title="{{ 'Deactivate' if med.active else 'Activate' }}">
+                                <i class="fas fa-{{ 'pause' if med.active else 'play' }}"></i>
+                            </button>
+                        </form>
+                        <form method="POST" action="{{ url_for('main.delete_medication', med_id=med.id) }}" class="inline-form confirm-delete" data-med-name="{{ med.name }}">
+                            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                            <button type="submit" class="btn-icon btn-delete" title="Delete">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state" id="empty-medications">
+        <div class="empty-icon">
+            <i class="fas fa-capsules"></i>
+        </div>
+        <h3>No medications added yet</h3>
+        <p>Start by adding your medications so you can track your daily adherence.</p>
+        <a href="{{ url_for('main.add_medication') }}" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Add Your First Medication
+        </a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}
