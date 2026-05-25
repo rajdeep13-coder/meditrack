@@ -1,11 +1,8 @@
-import pytest
-
-from app import create_app
+"""Basic application-level smoke tests."""
 
 
-def test_index_route_returns_ok():
-    app = create_app()
-    client = app.test_client()
-    resp = client.get('/')
-    # Landing page may redirect to dashboard when signed in; accept 200 or 302
-    assert resp.status_code in (200, 302)
+def test_index_route_is_reachable(client):
+    """Landing page should render successfully for anonymous users."""
+    response = client.get("/")
+    assert response.status_code == 200
+    assert b"MediTrack" in response.data
